@@ -1,4 +1,4 @@
-package Array;
+package tp1ejercicio5;
  
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -137,6 +137,19 @@ public class Helper {
         } while (band!=false);
         singleCharacter = character.charAt(0);
         return singleCharacter;
+    }
+    
+    public static boolean yesOrNo(String question) {
+        char resp;
+        System.out.println("\n" + question + "\nPresione 'S'-SI\nPresione 'N'-NO");
+        String line = input.nextLine();
+        if (line.length() > 0) {
+            resp = line.toLowerCase().charAt(0);
+            if (resp == 's')return true;
+            if (resp == 'n')return false;
+        }
+        System.out.println("La opción es incorrecta, intentelo de nuevo!");
+        return yesOrNo(question);
     }
     
 }
