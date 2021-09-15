@@ -1,0 +1,352 @@
+package Array;
+ 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+ 
+public class ED_E5 {
+    private ArrayList<Persona> persona = new ArrayList<>();
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private static final Date invalidDate = new Date(0);
+    
+    public static void main(String[] args) {
+        (new ED_E5()).open();
+    }
+    
+    public void open(){
+        char option;
+        do{
+            System.out.println("Registro de Personas");
+            System.out.println("(a) Registro Manual");
+            System.out.println("(b) Registro Automatico");               
+            System.out.print("Opcion: ");
+            option=Helper.getChar();
+        }while(run(option));
+        info();
+    }
+    
+    public void info(){
+        Date minDate,maxDate;
+        System.out.println("Se buscara personas dentro de un rango de fechas"); 
+        System.out.print("Desde: ");
+        minDate=Helper.getDate();       
+        do{
+            System.out.print("Hasta: ");
+            maxDate=Helper.getDate();
+        }while(validateMaximum(minDate,maxDate));
+        System.out.println("Las siguientes persones se encuentran entre "+sdf.format(minDate)+" y "+sdf.format(minDate));
+        for (int i=0; i<getPersona().size();i++) {
+            // Se evalua en los extremos
+            if(getPersona().get(i).getFechaNacimiento().equals(minDate)||getPersona().get(i).getFechaNacimiento().equals(maxDate)){
+                System.out.println(getPersona().get(i));
+            }
+            // Se evalua en fechas de por medio
+            if((getPersona().get(i).getFechaNacimiento().after(minDate))&((getPersona().get(i).getFechaNacimiento().before(maxDate)))){
+                System.out.println(getPersona().get(i));
+            }
+        } 
+    }
+     
+    public boolean validateMaximum(Date minDate,Date maxDate){
+        if(minDate.equals(maxDate)){
+            System.out.println("Debe ingresar una fecha distinta a la ingresada anteriormente");
+            return true;
+        }
+        if(minDate.after(maxDate)){
+            System.out.println("Debe ingresar una fecha mayor a la ingresada anteriormente");
+            return true;
+        }else{
+            return false;
+        }
+    }     
+ 
+    public void registerManual(){
+        String apellido,nombre,correo;
+        char resp;
+        int documento,numeroCelular;        
+        Date fechaNacimiento;
+        do{
+            System.out.print("Ingrese Apellido: ");
+            apellido= Helper.getString();
+            System.out.print("Ingrese Nombre: ");
+            nombre=Helper.getString();  
+            do{
+                System.out.print("Ingrese DNI: ");
+                documento=Helper.getIntegerPositive();
+            }while(validateDni(documento));
+            System.out.print("Ingrese Fecha de Nacimiento(DD/MM/YYYY): ");
+            fechaNacimiento=Helper.getDate();   
+            do{
+                System.out.print("Ingrese mail: ");
+                correo=Helper.getString();
+            }while(validateMail(correo));
+            do{
+                System.out.print("Ingrese Num. Celular (15-...): ");
+                numeroCelular=Helper.getIntegerPositive();
+            }while(validateCel(Integer.toString(numeroCelular)));
+            getPersona().add(new Persona(apellido, nombre, documento, fechaNacimiento, correo, numeroCelular)); 
+            do{
+                System.out.print("Desea cargar otra persona (S/N): ");
+                resp = Helper.getChar();
+            }while(validateChar(resp));
+        }while((resp=='s')|(resp=='S'));
+        System.out.println("Se cargaron las siguientes personas: ");
+        System.out.println(getPersona());
+    }
+    
+    public boolean validateDni(int documento){
+        if((documento>=100000)&(documento<=99999999)){
+            return false;
+        }else{
+            System.out.println("Error...");
+            System.out.println("El DNI debe estar comprendido entre 6 y 8 cifras ");
+            return true;
+        }
+    }
+    
+    public boolean validateChar(char resp){
+        switch (resp){
+            case 's','S': return false;
+            case 'n','N': return false;
+            default:{
+                System.out.println("Debe ingresar (S/N)");
+                return true;
+            }  
+        }
+    }
+ 
+    public boolean validateCel(String numeroCelular){
+        Pattern pattern = Pattern.compile("^(15)[0-9]{7}$");
+         Matcher mather = pattern.matcher(numeroCelular);
+         if (mather.find()) {
+            return false;
+        } else {
+            System.out.println("Error...");
+            System.out.println("El Num. de Celular debe estar comprendido entre 9 cifras");
+             System.out.println("EJ: 15 4040314");
+            return true;
+        }
+    }
+    
+    public boolean validateMail(String correo){
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher mather = pattern.matcher(correo);
+        if (mather.find()) {
+            return false;
+        } else {
+            System.out.println("Error...");
+            System.out.println("El mail ingresado es incorrecto");
+            return true;
+        }
+    }
+    
+    public boolean run(char option){
+        switch(option){
+            case 'a','A':
+                registerManual();
+                return false;
+            case 'b','B':
+                registerAutomatic();
+                return false;
+                default:{
+                    System.out.println("Error...");
+                    System.out.println("Intentelo de nuevo");
+                    return true;
+                }
+        }
+    }
+    
+    public void registerAutomatic(){
+        String apellido,nombre,correo;
+        int documento,numeroCelular,i=0,randomCreate=Helper.random.nextInt(20)+1;
+        Date fechaNacimiento;
+        do{
+            apellido= someSurnames[Helper.random.nextInt(someSurnames.length)];
+            nombre=someNames[Helper.random.nextInt(someNames.length)];       
+            documento=someDNI[Helper.random.nextInt(someDNI.length)];       
+            fechaNacimiento=someDate[Helper.random.nextInt(someDate.length)];   
+            correo=someMail[Helper.random.nextInt(someMail.length)];
+            numeroCelular=someNumber[Helper.random.nextInt(someNumber.length)];
+            getPersona().add(new Persona(apellido, nombre, documento, fechaNacimiento, correo, numeroCelular)); 
+            i++;
+        }while(i<randomCreate);
+        System.out.println("Se generaron las siguientes personas: ");
+        System.out.println(getPersona());
+    }
+    
+    public Date fromString( String spec ) {
+        try {
+            return sdf.parse( spec );
+        } catch( ParseException dfe ) {
+            return invalidDate;
+        }
+    }
+    
+    private Date[] someDate= {
+        fromString("01/01/2020"),
+        fromString("29/09/1996"),
+        fromString("01/02/1998"),
+        fromString("12/12/2021"),
+        fromString("19/07/1997"),
+        fromString("15/11/2001"),
+        fromString("11/09/2005"),
+        fromString("30/01/2020"),
+        fromString("01/12/1996"),
+        fromString("15/07/1998"),
+        fromString("21/05/2010"),
+        fromString("23/08/1997"),
+        fromString("05/05/1999"),
+        fromString("20/12/1986"),
+        fromString("19/09/1977"),
+        fromString("21/06/1978"),
+        fromString("12/05/1995"),
+        fromString("11/09/2013"),
+        fromString("13/07/1997"),
+        fromString("12/08/2001")       
+    }; 
+    
+    private int[] someNumber={
+        154464257,
+        155665587,
+        154885698,
+        154668844,
+        154040314,
+        155449345,
+        154669977,
+        153369745,
+        154885521,
+        154448511,
+        155223348,
+        155894563,
+        154884003,
+        154448853,
+        155666313,
+        154854920,
+        154444684,
+        154552689,
+        154995613,
+        155336684,
+        154897982,
+        154789681,
+        155567321,
+        155687953,
+        154321894
+    };
+    
+    private String[] someMail={
+        "pavohottautto-8929@gmail.com",
+        "nojofapouho-2479@hotmail.com",
+        "kibredayeppe-2034@gmail.com",
+        "loucraseuppaddo-5744@hotmail.com",
+        "colorekeissu-4864@gmail.com",
+        "musoiheceha-7278@hotmmail.com",
+        "groquaudaquoiva-2582@gmail.com",
+        "creittovapoihe-9470@gmail.com",
+        "luvuracrata-3715@gmail.com",
+        "xegugusouppa-9677@hotmail.com",
+        "jillunegroipra-9474@gmail.com",
+        "duprizeiquajo-2695@hotmail.com",
+        "tureipeddoili-1853@hotmail.com",
+        "wobaxehipei-3003@hotmail.com",
+        "woyetrepreule-2878@gmail.com",
+        "pekegeyenne-3980@hotmail.com",
+        "tefrelemage-7137@hotmail.com",
+        "jeddazeiluboi-4042@gmail.com",
+        "pribigrissubu-2501@gmail.com",
+        "zimeprannuwu-8622@hotmail.com",
+        "douppazoicrebrei-3605@hotmail.com",  
+        "xoqueuprurutra-2509@hotmail.com",
+        "giyoiddugrelli-8055@gmail.com",
+        "taufreuveyefra-5445@hotmail.com",
+        "muddoipretrodau-5721@hotmail.com"
+    };
+    
+    private int[] someDNI={
+        39231923,
+        27616941,
+        8205546,
+        36941731,
+        38205546,
+        36048402,
+        43527322,
+        27727017,
+        40015131,
+        40175708,
+        40898441,
+        39989859,
+        33690033,
+        34346583,
+        37460276,
+        40175708,
+        38655652,
+        39738478,
+        40132830,
+        27110561,
+        34065779,
+        39930449,
+        40898405
+    };
+    
+    private String[] someSurnames={
+        "González",
+        "Gómez",
+        "Díaz",
+        "Chavez",
+        "Bermudez",
+        "Sanchez",
+        "Mendoza",
+        "Blazquez",
+        "Antunez",
+        "Muñoz",
+        "Ibañez",
+        "Hernandez",
+        "Valdez",
+        "Yañez",
+        "Rojas",
+        "Tellez",
+        "Ruiz",
+        "Paez",
+        "Ortiz",
+        "Ordoñez"
+    };
+    
+    private String[] someNames={
+        "Álan",
+        "Jacinto",
+        "Martinez",
+        "Alicia",
+        "Jesús",
+        "Mirta",
+        "Andrea",
+        "Josefina",
+        "Mónica",
+        "Andrés",
+        "Juan",
+        "Nicolás",
+        "Antonia",
+        "Juana",
+        "Noé",
+        "Antonio",
+        "Juano",
+        "Noelia",
+        "Azul", 
+        "Julia",
+        "Paula",
+        "Bartolomé",
+        "Julián",
+        "Pomponio",
+        "Lucia"    
+    };
+ 
+    public ArrayList<Persona> getPersona() {
+        return persona;
+    }
+ 
+    public void setPersona(ArrayList<Persona> persona) {
+        this.persona = persona;
+    }
+    
+}
