@@ -1,4 +1,4 @@
-package Array;
+package tp1ejercicio5;
  
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
  
-public class ED_E5 {
+public class TP1Ejercicio5 {
     private ArrayList<Persona> persona = new ArrayList<>();
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private static final Date invalidDate = new Date(0);
     
     public static void main(String[] args) {
-        (new ED_E5()).open();
+        (new TP1Ejercicio5()).open();
     }
     
     public void open(){
@@ -65,10 +65,10 @@ public class ED_E5 {
  
     public void registerManual(){
         String apellido,nombre,correo;
-        char resp;
         int documento,numeroCelular;        
         Date fechaNacimiento;
-        do{
+        boolean run = true;
+        while(run) {
             System.out.print("Ingrese Apellido: ");
             apellido= Helper.getString();
             System.out.print("Ingrese Nombre: ");
@@ -88,11 +88,9 @@ public class ED_E5 {
                 numeroCelular=Helper.getIntegerPositive();
             }while(validateCel(Integer.toString(numeroCelular)));
             getPersona().add(new Persona(apellido, nombre, documento, fechaNacimiento, correo, numeroCelular)); 
-            do{
-                System.out.print("Desea cargar otra persona (S/N): ");
-                resp = Helper.getChar();
-            }while(validateChar(resp));
-        }while((resp=='s')|(resp=='S'));
+
+            run = Helper.yesOrNo("¿Desea continuar?");
+        }
         System.out.println("Se cargaron las siguientes personas: ");
         System.out.println(getPersona());
     }
@@ -104,17 +102,6 @@ public class ED_E5 {
             System.out.println("Error...");
             System.out.println("El DNI debe estar comprendido entre 6 y 8 cifras ");
             return true;
-        }
-    }
-    
-    public boolean validateChar(char resp){
-        switch (resp){
-            case 's','S': return false;
-            case 'n','N': return false;
-            default:{
-                System.out.println("Debe ingresar (S/N)");
-                return true;
-            }  
         }
     }
  
@@ -145,10 +132,10 @@ public class ED_E5 {
     
     public boolean run(char option){
         switch(option){
-            case 'a','A':
+            case 'a':
                 registerManual();
                 return false;
-            case 'b','B':
+            case 'b':
                 registerAutomatic();
                 return false;
                 default:{
