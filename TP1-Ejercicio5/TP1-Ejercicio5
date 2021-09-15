@@ -30,14 +30,14 @@ public class TP1Ejercicio5 {
     
     public void info(){
         Date minDate,maxDate;
-        System.out.println("Se buscara personas dentro de un rango de fechas"); 
+        System.out.println("Se buscaran personas dentro de un rango de fechas"); 
         System.out.print("Desde: ");
         minDate=Helper.getDate();       
         do{
             System.out.print("Hasta: ");
             maxDate=Helper.getDate();
         }while(validateMaximum(minDate,maxDate));
-        System.out.println("Las siguientes persones se encuentran entre "+sdf.format(minDate)+" y "+sdf.format(minDate));
+        System.out.println("Las siguientes personas se encuentran entre "+sdf.format(minDate)+" y "+sdf.format(minDate));
         for (int i=0; i<getPersona().size();i++) {
             // Se evalua en los extremos
             if(getPersona().get(i).getFechaNacimiento().equals(minDate)||getPersona().get(i).getFechaNacimiento().equals(maxDate)){
