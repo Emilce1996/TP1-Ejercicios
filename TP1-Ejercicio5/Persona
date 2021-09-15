@@ -1,0 +1,83 @@
+package Array;
+ 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+ 
+public class Persona {
+    private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private String apellido;
+    private String nombre;
+    private int documento;
+    private Date fechaNacimiento;
+    private String correo;
+    private int numeroCelular;
+ 
+    public Persona(String apellido, String nombre, int documento, Date fechaNacimiento, String correo, int numeroCelular) {
+        this.apellido = apellido;
+        this.nombre = nombre;
+        this.documento = documento;
+        this.fechaNacimiento = fechaNacimiento;
+        this.correo = correo;
+        this.numeroCelular = numeroCelular;
+    }
+ 
+    public String getApellido() {
+        return apellido;
+    }
+ 
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+ 
+    public String getNombre() {
+        return nombre;
+    }
+ 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+ 
+    public int getDocumento() {
+        return documento;
+    }
+ 
+    public void setDocumento(int documento) {
+        this.documento = documento;
+    }
+ 
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+ 
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+ 
+    public String getCorreo() {
+        return correo;
+    }
+ 
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+ 
+    public int getNumeroCelular() {
+        return numeroCelular;
+    }
+ 
+    public void setNumeroCelular(int numeroCelular) {
+        this.numeroCelular = numeroCelular;
+    }
+ 
+    @Override
+    public String toString() {
+        return "Persona{" + 
+                "\n Apellido= " + apellido +
+                "\n Nombre= " + nombre + 
+                "\n Documento= " + documento + 
+                "\n Fecha de Nacimiento= " + sdf.format(fechaNacimiento) + 
+                "\n Correo= " + correo + 
+                "\n Numero de Celular= " + numeroCelular +
+                "\n}\n";
+    }
+}
