@@ -1,0 +1,79 @@
+package tp1ejercicio1;
+import java.util.Scanner;
+import java.util.Random;
+ 
+ 
+public class Helper {
+    
+    public static Scanner read = new Scanner(System.in);
+    public static Random random = new Random();
+    
+    private static Integer validarEntero(String inputMessage, String errorMessage) {
+        while (true) {
+                try {
+                    System.out.println(inputMessage);
+                    return Integer.parseInt(read.nextLine());
+                }catch (NumberFormatException e) {System.out.println(errorMessage);}
+        }
+    }
+    
+    public static Integer validarEntero(String inputMessage) {
+        return validarEntero(inputMessage,"\nError: El valor ingresado no es un número entero");
+    }
+    
+    public static boolean multiploSiete(int num) {
+        boolean multi = false;
+        if (num == 0) return false;
+        if (num % 7 == 0) {
+            multi = true;
+        }
+        return multi;
+    }
+    
+    public static boolean esPrimo(int num) {
+        boolean primo = true;
+        if (num == 0 || num == 1 || num == 4) return false;
+        for (int i = 2; i < (num/2); i++) {
+            if (num % i == 0) {
+                primo = false;
+                break;
+            }
+        }
+        return primo;
+    }
+    
+    private static Integer validarEnteroPositivo(String inputMessage, String errorMessage) {
+        while (true) {
+            int n = validarEntero(inputMessage);
+            if(n > 0) return n;
+            System.out.println("\n" + errorMessage);
+        }
+    }
+    
+    public static Integer validarEnteroPositivo(String inputMessage) {
+        return validarEnteroPositivo(inputMessage,"\nError: El valor ingresado no es un número positivo!");
+    }
+    
+    public static int randomMultiploSiete() {
+        int numero = random.nextInt(100);
+        while (multiploSiete(numero) == false) {
+            numero = random.nextInt(100);
+        }
+        return numero;
+    }
+    
+    public static int randomPrimo() {
+        int numero = random.nextInt(100);
+        while (esPrimo(numero) == false) {
+            numero = random.nextInt(100);
+        }
+        return numero;
+    }
+    
+    public static void menu() {
+        System.out.println("MENU CARGAR VECTOR");
+        System.out.println("1_Ingresar valores manualmente.");
+        System.out.println("2_Generar valores aleatorios.");
+    }
+    
+}
