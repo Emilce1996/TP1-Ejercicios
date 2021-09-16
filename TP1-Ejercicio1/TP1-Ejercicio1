@@ -1,0 +1,136 @@
+package tp1ejercicio1;
+import java.util.Scanner;
+ 
+public class TP1Ejercicio1 {
+ 
+    
+    public static void main(String[] args) {
+        int myArray1[] = TP1Ejercicio1.vector1();
+        int myArray2[] = TP1Ejercicio1.vector2();
+        int myArray3[] = TP1Ejercicio1.vector3(myArray1, myArray2);
+        TP1Ejercicio1.mediaVector(myArray1, myArray2);
+        System.out.println("La media del Vector 1 es: " + media1);
+        System.out.println("La media del Vector 2 es: " + media2);
+        TP1Ejercicio1.mostrarMayores(myArray3);
+        TP1Ejercicio1.mostrarMenores(myArray3);
+    }
+    
+    public static Scanner read = new Scanner(System.in);
+    public static double media1, media2;
+    
+    public static int[] vector1() {
+        int myArray1[] = new int [10];
+        int opcion;
+            do {
+                Helper.menu();
+                opcion = Helper.validarEnteroPositivo("¿Como desea ingresar el Vector 1?");
+                switch(opcion) {
+                    case 1:                       
+                        System.out.println("Ingrese 10 nº enteros al vector: ");
+                        for(int i = 0; i < 10; i++) {
+                            do {
+                                myArray1[i] = Helper.validarEntero("Ingrese el valor: ");
+                                if(Helper.multiploSiete(myArray1[i]) == false) {
+                                    System.out.println("El valor ingresado no es múltiplo de 7!");
+                                }
+                            }while(Helper.multiploSiete(myArray1[i]) == false);
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Vector 1 cargado...");
+                        for(int i = 0; i < 10; i++) {
+                            myArray1[i] = Helper.randomMultiploSiete();        
+                        }
+                        break;
+                        default:
+                        System.out.println("Opción incorrecta, debe ingresar 1 o 2!");
+                        break;
+                }
+            }while(opcion > 2);
+        return myArray1;
+    }
+    
+    public static int[] vector2() {
+        int myArray2[] = new int [10];
+        int opcion;
+            do {
+                Helper.menu();
+                opcion = Helper.validarEnteroPositivo("¿Como desea ingresar el Vector 2?");
+                switch(opcion) {
+                    case 1:                                               
+                        System.out.println("Ingrese 10 nº enteros al vector: ");
+                        for(int i = 0; i < 10; i++) {
+                            do {
+                                myArray2[i] = Helper.validarEntero("Ingrese el valor: ");
+                                if(Helper.esPrimo(myArray2[i]) == false) {
+                                    System.out.println("El valor ingresado no es un número primo!");
+                                }
+                            }while(Helper.esPrimo(myArray2[i]) == false);
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Vector 2 cargado...");
+                        for(int i = 0; i < 10; i++) {
+                            myArray2[i] = Helper.randomPrimo();        
+                        }
+                        break;
+                        default:
+                        System.out.println("Opción incorrecta, debe ingresar 1 o 2!");
+                        break;
+                }
+            }while(opcion > 2);
+        return myArray2;
+    }
+    
+    public static int[] vector3(int myArray1[], int myArray2[]) {
+        int myArray3[] = new int [10];
+        for(int i = 0; i < 10; i++) {
+            myArray3[i] = myArray1[i] * myArray2[i];
+        }
+        System.out.println("El producto del vector 1 y 2 es: ");
+        for(int i = 0; i < 10; i++) {
+        System.out.println(myArray1[i] + " * " + myArray2[i] + " = " + myArray3[i]);
+        }
+        return myArray3;
+    }
+    
+    public static double mediaVector(int myArray1[], int myArray2[]) {
+        int suma1 = 0, suma2 = 0;
+        for(int i = 0; i < 10; i++) {
+            suma1 += myArray1[i];
+        }
+        media1 = (double) suma1/myArray1.length;
+        for(int i = 0; i < 10; i++) {
+            suma2 += myArray2[i];
+        }
+        media2 = (double) suma2/myArray2.length;
+        return media1 + media2;
+    }
+    
+    public static int[] mostrarMayores(int myArray3[]) {
+        int mayores[] = new int[myArray3.length];
+        System.out.println("Los valores mayores a la media del Vector 1 son: ");
+        for (int i = 0; i < 10; i++) {
+            if (myArray3[i] > media1) {
+                mayores[i] = myArray3[i];
+                System.out.println(mayores[i] + " ");
+            }
+        }
+        System.out.println("----");
+        return mayores;
+    }
+    
+    public static int[] mostrarMenores(int myArray3[]) {
+        int menores[] = new int[myArray3.length];
+        System.out.println("Los valores menores a la media del Vector 2 son: ");
+        for (int i = 0; i < 10; i++) {
+            if (myArray3[i] < media2) {
+                menores[i] = myArray3[i];
+                System.out.println(menores[i] + " ");
+            }
+        }
+        System.out.println("----");
+        return menores;
+    }
+ 
+}
